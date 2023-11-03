@@ -1,11 +1,14 @@
 package http
 
 import (
+	"file-upload-api/domain"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 type Config struct {
+	FileRepo domain.FileRepository
 }
 
 func RunHttpServer(config Config) *fiber.App {

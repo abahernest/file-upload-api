@@ -33,9 +33,10 @@ func main() {
 
 	domain.GetSecrets(l)
 
-	_ = mongodb.New(l)
+	repo := mongodb.New(l)
 
 	httpConfig := httpDelivery.Config{
+		FileRepo: repo.FileRepo,
 	}
 
 	app := port.RunHttpServer(httpConfig)
