@@ -15,7 +15,7 @@ type mongoFileRepository struct {
 	Coll *mgm.Collection
 }
 
-func (m mongoFileRepository) Create(ctx context.Context, cid, filename string, fileSize float64) (*domain.File, error) {
+func (m mongoFileRepository) Create(ctx context.Context, cid, filename string, fileSize int64) (*domain.File, error) {
 
 	file := domain.File{Name: filename, Cid: cid, Size: fileSize}
 
@@ -43,12 +43,12 @@ func (m mongoFileRepository) GetById(ctx context.Context, id string) (*domain.Fi
 	return &file, nil
 }
 
-func (m mongoFileRepository) GetFileList(ctx context.Context, page, limit int64) ([]*domain.File, error) {
+func (m mongoFileRepository) GetFileList(ctx context.Context, page, limit, sort int64) ([]*domain.File, error) {
 	var files []*domain.File
 
 	pipeline := bson.A{
 		bson.D{{Key: "$sort", Value: bson.M{
-			"created_at": -1,
+			"created_at": sort,
 		}}},
 		bson.D{{Key: "$skip", Value: (page - 1) * limit}},
 		bson.D{{Key: "$limit", Value: limit}},
